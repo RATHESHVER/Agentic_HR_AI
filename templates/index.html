@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agentic HR AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Autonomous Resume Screening & Job Matcher</h2>
+
+        <!-- Resume Upload -->
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="resume" required>
+            <br><br>
+            <button type="submit">Upload & Analyze</button>
+        </form>
+
+        <hr>
+
+        <!-- LLaMA-3 Chat -->
+        <h3>🤖 Chat with LLaMA-3</h3>
+
+        <input type="text" id="userMessage"
+               placeholder="Ask anything..."
+               style="width:70%; padding:10px;">
+        <button onclick="sendMessage()">Send</button>
+
+        <pre id="chatResponse"></pre>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const message = document.getElementById("userMessage").value;
+
+            fetch("/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "message=" + encodeURIComponent(message)
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("chatResponse").innerText = data;
+            });
+        }
+    </script>
+</body>
+</html>

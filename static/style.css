@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 60%;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+button {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #16a085;
+}
+
+input[type="file"] {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.section {
+    margin-top: 20px;
+}
+
+.apply {
+    color: green;
+    font-weight: bold;
+}
+
+.improve {
+    color: red;
+    font-weight: bold;
+}
+
+.ai-box {
+    background: #eef9f6;
+    padding: 15px;
+    border-left: 5px solid #1abc9c;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+pre {
+    background: #f4f4f4;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+ul {
+    list-style-type: square;
+}
+
+.chat-box {
+    background: #f4f6f8;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 6px;
+
+    /* IMPORTANT FIXES */
+    white-space: pre-wrap;      /* preserves line breaks */
+    word-wrap: break-word;      /* breaks long words */
+    overflow-wrap: break-word;  /* modern standard */
+    max-width: 100%;
+
+    max-height: 300px;
+    overflow-y: auto;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+

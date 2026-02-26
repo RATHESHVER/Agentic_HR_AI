@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Resume Screening Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+
+        <h2>🧠 Resume Screening Result</h2>
+
+        <p><strong>Recommended Job:</strong> {{ decision.job_title }}</p>
+        <p><strong>Category:</strong> {{ decision.category }}</p>
+
+        <p>
+            <strong>Decision:</strong>
+            <span class="{{ 'apply' if decision.decision == 'APPLY' else 'improve' }}">
+                {{ decision.decision }}
+            </span>
+        </p>
+
+        <p><strong>Match Ratio:</strong> {{ decision.match_ratio }}</p>
+        <p><strong>Reason:</strong> {{ decision.reason }}</p>
+
+        <hr>
+
+        <h3>✅ Matched Skills</h3>
+        <ul>
+            {% for skill in decision.matched_skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+
+        <h3>⚠️ Missing Skills</h3>
+        <ul>
+            {% for skill in decision.missing_skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+
+        <hr>
+
+        <!-- ========================= -->
+        <!-- CONTEXT-AWARE LLaMA CHAT -->
+        <!-- ========================= -->
+
+        <h3>🤖 AI Resume Coach (LLaMA-3)</h3>
+        <p style="color: #555;">
+            Ask how to improve <strong>this resume</strong> based on the above results.
+        </p>
+
+        <!-- Chat Input -->
+        <input type="text"
+               id="chatMessage"
+               placeholder="e.g. How can I improve my resume for this role?"
+               style="width:75%; padding:10px;">
+        <button onclick="sendResumeChat()">Ask</button>
+
+        <div id="chatResponse" class="chat-box"></div>
+
+
+        <!-- Hidden context fields (VERY IMPORTANT) -->
+        <input type="hidden" id="job_title" value="{{ decision.job_title }}">
+        <input type="hidden" id="decision" value="{{ decision.decision }}">
+        <input type="hidden" id="match_ratio" value="{{ decision.match_ratio }}">
+        <input type="hidden" id="matched_skills" value="{{ decision.matched_skills | join(', ') }}">
+        <input type="hidden" id="missing_skills" value="{{ decision.missing_skills | join(', ') }}">
+
+        <br><br>
+        <a href="/">⬅ Analyze another resume</a>
+    </div>
+
+    <!-- ========================= -->
+    <!-- CHAT SCRIPT -->
+    <!-- ========================= -->
+    <script>
+        function sendResumeChat() {
+            const message = document.getElementById("chatMessage").value;
+
+            const jobTitle = document.getElementById("job_title").value;
+            const decision = document.getElementById("decision").value;
+            const matchRatio = document.getElementById("match_ratio").value;
+            const matchedSkills = document.getElementById("matched_skills").value;
+            const missingSkills = document.getElementById("missing_skills").value;
+
+            fetch("/resume_chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body:
+                    "message=" + encodeURIComponent(message) +
+                    "&job_title=" + encodeURIComponent(jobTitle) +
+                    "&decision=" + encodeURIComponent(decision) +
+                    "&match_ratio=" + encodeURIComponent(matchRatio) +
+                    "&matched_skills=" + encodeURIComponent(matchedSkills) +
+                    "&missing_skills=" + encodeURIComponent(missingSkills)
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("chatResponse").textContent = data;
+            });
+        }
+    </script>
+
+</body>
+</html>
